@@ -14,18 +14,6 @@ createConnection()
     app.use(express.json());
     app.use(cors());
 
-    // console.log("Inserting a new pattern into the database...");
-    // const pattern = new Pattern();
-    // pattern.name = "pulsar";
-    // pattern.patternJSON = JSON.stringify([
-    //...
-    // ]);
-
-    // await connection.manager.save(pattern);
-    // console.log("Saved a new user with id: " + pattern.id);
-
-    // console.log("Loading patterns from the database...");
-
     app.get("/", async function (req: Request, res: Response) {
       const results = await patternRepository.find();
       return res.send(results.map((item) => item.name).concat("random"));
@@ -41,8 +29,16 @@ createConnection()
       );
     });
 
-    // const patterns = await connection.manager.find(Pattern);
-    // console.log("Loaded patterns: ", patterns);
+    app.post("/:setting", async function (req: Request, res: Response) {
+      const patternName = req.params.setting;
+      const pattern = new Pattern();
+      pattern.name = patternName;
+      pattern.patternJSON = JSON.stringify(req.body);
+
+      const results = await connection.manager.save(pattern);
+
+      return res.send(results);
+    });
 
     app.listen(8080);
   })
