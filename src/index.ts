@@ -50,6 +50,13 @@ createConnection()
       return res.send(results);
     });
 
+    app.delete("/:setting", async function (req: Request, res: Response) {
+      const patternName = req.params.setting;
+      const results = await connection.manager.delete(Pattern, {
+        name: patternName,
+      });
+      return res.send(results);
+    });
     app.listen(8080);
   })
   .catch((error) => console.log(error));
