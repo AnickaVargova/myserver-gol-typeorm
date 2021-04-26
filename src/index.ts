@@ -40,6 +40,16 @@ createConnection()
       return res.send(results);
     });
 
+    app.put("/:setting", async function (req: Request, res: Response) {
+      const patternName = req.params.setting;
+      const results = await connection.manager.update(
+        Pattern,
+        { name: patternName },
+        { patternJSON: JSON.stringify(req.body) }
+      );
+      return res.send(results);
+    });
+
     app.listen(8080);
   })
   .catch((error) => console.log(error));
