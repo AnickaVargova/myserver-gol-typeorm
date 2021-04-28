@@ -36,7 +36,6 @@ async function main() {
     pattern.name = patternName;
     pattern.patternJSON = JSON.stringify(req.body);
     const results = await patternRepository.save(pattern);
-
     return res.send(results);
   });
 

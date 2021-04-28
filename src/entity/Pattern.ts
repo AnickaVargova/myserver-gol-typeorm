@@ -5,9 +5,13 @@ export class Pattern {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({
+    type: "varchar",
+  })
   name: string;
 
-  @Column()
+  @Column({
+    type: "jsonb",
+  })
   patternJSON: string;
 }
