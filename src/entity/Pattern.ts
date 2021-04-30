@@ -12,6 +12,7 @@ export class Pattern {
 
   @Column({
     type: "jsonb",
+    name: "pattern_json",
   })
   patternJSON: string;
 }
