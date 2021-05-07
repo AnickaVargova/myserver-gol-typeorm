@@ -10,6 +10,7 @@ async function main() {
   const connection = await createConnection();
   const app = express();
 
+
   const patternRepository = connection.getRepository(Pattern);
 
   app.use(express.json());
@@ -20,13 +21,14 @@ async function main() {
     return res.send(results.map((item) => item.name).concat("random"));
   });
 
-  app.get("/random", (req, res) => res.send(random()));
+  app.get("/1", (req, res) => res.send(random()));
 
-  app.get("/:setting", async function (req: Request, res: Response) {
+  app.get("/:setting([A-z]+)", async function (req: Request, res: Response) {
     const patternName = req.params.setting;
     const results = await patternRepository.find();
     return res.send(
-      results.find((item) => item.name === patternName).patternJSON
+      results.find((item) => item.name === patternName).pattern_json
+      
     );
   });
 
@@ -34,16 +36,16 @@ async function main() {
     const patternName = req.params.setting;
     const pattern = new Pattern();
     pattern.name = patternName;
-    pattern.patternJSON = JSON.stringify(req.body);
+    pattern.pattern_json = JSON.stringify(req.body);
     const results = await patternRepository.save(pattern);
     return res.send(results);
   });
 
-  app.put("/:setting", async function (req: Request, res: Response) {
+  app.post("/:setting", async function (req: Request, res: Response) {
     const patternName = req.params.setting;
     const results = await patternRepository.update(
       { name: patternName },
-      { patternJSON: JSON.stringify(req.body) }
+      { pattern_json: JSON.stringify(req.body) }
     );
     return res.send(results);
   });
