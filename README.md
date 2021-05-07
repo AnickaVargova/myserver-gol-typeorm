@@ -11,6 +11,8 @@ exit for killing terminal
 
 npm run orm -- migration:generate -n 'somename'
 
+docker build -t gol-server:8.0 .
+
 docker run --network=gol-network -p 8080:8080 -it gol-server:8.0  /bin/bash
 
 npm run orm migration:run  //for migration
