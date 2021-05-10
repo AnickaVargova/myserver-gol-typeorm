@@ -26,18 +26,19 @@ async function main() {
     if (req.params.setting) {
       const patternName = req.params.setting;
       const results = await patternRepository.find();
-      if (results.length) {
-        return res.send(
-          results.find((item) => item.name === patternName).pattern_json
-        );
+      const resultPattern = results.find((item) => item.name === patternName)
+       
+      if (resultPattern) {
+        return res.send(resultPattern.pattern_json);
+      } else {
+        return null;
       }
     }
   });
 
   app.post('/:setting([A-z]+)', async function (req: Request, res: Response) {
-    const patternName = req.params.setting;
     const pattern = new Pattern();
-    pattern.name = patternName;
+    pattern.name = req.params.setting;
     pattern.pattern_json = JSON.stringify(req.body);
     const results = await patternRepository.save(pattern);
     return res.send(results);
